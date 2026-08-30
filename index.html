@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f6b4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Home monthly budget</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <p class="toast" id="toast" hidden></p>
+    <header class="top">
+      <div>
+        <p class="eyebrow">Home monthly budget</p>
+        <h1>This month and next month</h1>
+      </div>
+      <div class="top-actions">
+        <span id="user-name" class="muted"></span>
+        <button type="button" class="ghost" id="logout">Log out</button>
+      </div>
+    </header>
+
+    <section class="summary">
+      <label class="month-pick">
+        This month
+        <input type="month" id="month" />
+        <span class="month-fallback" id="month-fallback" hidden>
+          <select id="month-name" aria-label="Month"></select>
+          <select id="month-year" aria-label="Year"></select>
+        </span>
+      </label>
+      <div class="compare-grid">
+        <article class="month-card">
+          <h2 id="this-label">This month</h2>
+          <div class="stat-grid">
+            <article class="stat">
+              <h2>Full budget</h2>
+              <p id="stat-budget">₹0</p>
+            </article>
+            <article class="stat">
+              <h2>Spent</h2>
+              <p id="stat-spent">₹0</p>
+            </article>
+            <article class="stat leftover">
+              <h2>Leftover</h2>
+              <p id="stat-leftover">₹0</p>
+            </article>
+          </div>
+        </article>
+        <article class="month-card">
+          <h2 id="next-label">Next month</h2>
+          <div class="stat-grid">
+            <article class="stat">
+              <h2>Full budget</h2>
+              <p id="next-budget">₹0</p>
+            </article>
+            <article class="stat">
+              <h2>Spent</h2>
+              <p id="next-spent">₹0</p>
+            </article>
+            <article class="stat leftover" id="next-leftover-wrap">
+              <h2>Leftover</h2>
+              <p id="next-leftover">₹0</p>
+            </article>
+          </div>
+        </article>
+      </div>
+      <div class="budget-track" aria-hidden="true">
+        <div class="budget-track-fill" id="budget-fill"></div>
+      </div>
+      <p class="muted" id="compare"></p>
+      <section class="report" id="report">
+        <div class="report-head">
+          <div>
+            <h2>Monthly budget report</h2>
+            <p class="muted" id="report-subtitle">Budget, spends, and leftover for the selected month.</p>
+          </div>
+          <button type="button" class="ghost" id="print-report">Print report</button>
+        </div>
+        <p class="report-status" id="report-status"></p>
+        <div class="report-table-wrap">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Thing</th>
+                <th id="report-this-col">This month</th>
+                <th id="report-next-col">Next month</th>
+                <th>Change</th>
+                <th>Share</th>
+              </tr>
+            </thead>
+            <tbody id="report-body"></tbody>
+            <tfoot id="report-foot"></tfoot>
+          </table>
+        </div>
+      </section>
+      <form id="budget-form" class="budget-form">
+        <label>
+          Set this month’s full budget (₹)
+          <input
+            type="number"
+            id="budget-amount"
+            min="0"
+            step="1"
+            value="2000"
+            inputmode="numeric"
+            required
+          />
+        </label>
+        <button type="submit">Save budget</button>
+        <button type="button" class="ghost" id="copy-next">Copy this budget to next month</button>
+      </form>
+    </section>
+
+    <section class="add-thing">
+      <h2>Add new thing</h2>
+      <p class="muted">Milk, gas, school fees — anything you buy each month.</p>
+      <form id="item-form">
+        <input type="text" id="item-name" placeholder="Name of the new thing" required />
+        <button type="submit">Add</button>
+      </form>
+    </section>
+
+    <section>
+      <h2 class="section-title">Monthly buying</h2>
+      <p class="muted">
+        Vegetables, chicken, water, electric bill, home things — plus anything you add.
+        Change the month picker to enter next month’s buys.
+      </p>
+      <div id="items" class="items"></div>
+    </section>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>

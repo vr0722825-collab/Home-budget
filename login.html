@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1f6b4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Log in — Home budget</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body class="auth-body">
+    <main class="auth-card">
+      <p class="eyebrow">Household money</p>
+      <h1>Home monthly budget</h1>
+      <p class="muted">Works on phone and computer. Log in with your username.</p>
+      <form id="login-form">
+        <label>
+          Username
+          <input
+            type="text"
+            name="username"
+            required
+            autocomplete="username"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="next"
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            name="password"
+            required
+            autocomplete="current-password"
+            enterkeyhint="go"
+          />
+        </label>
+        <p class="form-error" id="error" hidden></p>
+        <button type="submit">Log in</button>
+      </form>
+      <p class="muted">Household usernames: vicky, raajan, obito, alpha</p>
+      <p class="muted phone-hint" id="phone-hint" hidden></p>
+    </main>
+    <script>
+      fetch("/api/me")
+        .then((r) => {
+          if (r.ok) location.href = "/";
+        })
+        .catch(() => {});
+
+      fetch("/api/lan")
+        .then((r) => r.json())
+        .then((body) => {
+          const urls = body.urls || [];
+          if (!urls.length) return;
+          const hint = document.getElementById("phone-hint");
+          hint.hidden = false;
+          hint.innerHTML =
+            "On your phone, join the same Wi-Fi and open:<br>" +
+            urls.map((url) => `<strong>${url}</strong>`).join("<br>");
+        })
+        .catch(() => {});
+
+      document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const error = document.getElementById("error");
+        error.hidden = true;
+        const data = Object.fromEntries(new FormData(e.target));
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const body = await res.json();
+        if (!res.ok) {
+          error.textContent = body.error || "Could not log in.";
+          error.hidden = false;
+          return;
+        }
+        location.href = "/";
+      });
+    </script>
+  </body>
+</html>
