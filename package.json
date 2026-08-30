@@ -1,0 +1,14 @@
+{
+  "name": "home-monthly-budget",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Household monthly budget with login",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  }
+}
